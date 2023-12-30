@@ -1,7 +1,7 @@
 import styles from "./styles.module.css";
 import React, { useState } from 'react';
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 const Main = () => {
@@ -14,13 +14,15 @@ const Main = () => {
 	const [error, setError] = useState("");
 	const navigate = useNavigate();
 
+	const handleChange = ({ currentTarget: input }) => {
+		setData({ ...data, [input.name]: input.value });
+	};
+
 	const toggleInputBox = () => {
 		setIsInputBoxVisible(!isInputBoxVisible);
 	};
 
 	const handleFilename = async (e) => {
-		data.fileName = document.getElementById("inputBox").value;
-		console.log(data);
 		e.preventDefault();
 		try {
 			const url = "http://localhost:5000/api/docs";
@@ -28,6 +30,7 @@ const Main = () => {
 			navigate("/");
 			console.log(res.message);
 		} catch (error) {
+			console.log(error);
 			if (
 				error.response &&
 				error.response.status >= 400 &&
@@ -56,7 +59,15 @@ const Main = () => {
 			{isInputBoxVisible && (
 				<div>
 				<label htmlFor="inputBox">Input Box:</label>
-				<input type="text" id="inputBox" placeholder="Document Name" />
+				<input
+							type="text"
+							placeholder="Document Name"
+							name="fileName"
+							onChange={handleChange}
+							value={data.fileName}
+							required
+							className={styles.input}
+						/>
 				<button onClick={handleFilename}>
 					Submit
 				</button>

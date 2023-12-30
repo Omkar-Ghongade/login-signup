@@ -5,11 +5,11 @@ router.post("/", async (req, res) => {
 	try {
 		const { error } = validate(req.body);
 		if (error){
-			console.log(req.body);
+			console.log(error);
 			return res.status(400).send({ message: error});
 		}
 
-		const user = await Doc.findOne({ docName: req.body.docName });
+		const user = await Doc.findOne({ docName: req.body.fileName });
 		if (user)
 			return res
 				.status(409)
