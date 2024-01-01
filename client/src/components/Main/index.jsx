@@ -22,6 +22,8 @@ const Main = () => {
 		setIsInputBoxVisible(!isInputBoxVisible);
 	};
 
+	
+
 	const handleFilename = async (e) => {
 		e.preventDefault();
 		try {
@@ -45,6 +47,8 @@ const Main = () => {
 		localStorage.removeItem("token");
 		window.location.reload();
 	};
+
+	
 
 	return (
 		<div className={styles.main_container}>
