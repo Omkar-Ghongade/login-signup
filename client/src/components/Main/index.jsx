@@ -1,5 +1,5 @@
 import styles from "./styles.module.css";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +22,16 @@ const Main = () => {
 		setIsInputBoxVisible(!isInputBoxVisible);
 	};
 
-	
+	const url = "http://localhost:5000/getfileNames";
+	const [file, setfile] = useState([]);
+
+	const fetchInfo = () => {
+		return axios.get(url).then((res) => setfile(res.data));
+	  };
+
+	useEffect(() => {
+		fetchInfo();
+	}, []);
 
 	const handleFilename = async (e) => {
 		e.preventDefault();
@@ -30,6 +39,8 @@ const Main = () => {
 			const url = "http://localhost:5000/api/docs";
 			const { data: res } = await axios.post(url, data);
 			navigate("/");
+			fetchInfo();
+			data.fileName = "";
 			console.log(res.message);
 		} catch (error) {
 			console.log(error);
@@ -49,7 +60,6 @@ const Main = () => {
 	};
 
 	
-
 	return (
 		<div className={styles.main_container}>
 			<nav className={styles.navbar}>
@@ -77,7 +87,13 @@ const Main = () => {
 				</button>
 				</div>
 			)}
-
+			<ul>
+				{file.map(item => (
+				<li key={item._id}>
+					<strong>File Name:</strong> {item.fileName}
+				</li>
+				))}
+			</ul>
 		</div>
 	);
 };
