@@ -9,7 +9,7 @@ router.post("/", async (req, res) => {
 			return res.status(400).send({ message: error});
 		}
 
-		const user = await Doc.findOne({ docName: req.body.fileName });
+		const user = await Doc.findOne({ fileName: req.body.fileName });
 		if (user)
 			return res
 				.status(409)
